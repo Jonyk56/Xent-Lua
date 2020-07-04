@@ -13,17 +13,5 @@ local conf = {
 }
 
 
-local function GetPackages(o)
-	o = o or {}
-	setmetatable(o, self)
-	self.__index = self
-end
-
-
-
-local package = {
-	conf = conf,
-	gpack= GetPackages
-}
 
 return conf
