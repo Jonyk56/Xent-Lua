@@ -64,7 +64,7 @@ local function lex(instruction)
       in_str = 1
       stri = ""
     
-    elseif state == 1 and in_str == 1 and (char == "\"" or char == "\'") then
+    elseif state == 1 and in_str == 1 and (char == "\"" or char == "\'") and (char ~= "\\\"" or char ~= "\\\'") then
       in_str = 0
       print(string.sub(stri, 1, #stri - 1))
       stri = ""
@@ -126,7 +126,7 @@ local function lex(instruction)
       in_str = 1
       stri = ""
 
-    elseif state == 5 and in_str == 1 and  (char == "\"" or char == "\'") then
+    elseif state == 5 and in_str == 1 and  (char == "\"" or char == "\'") and (char ~= "\\\"" or char ~= "\\\'") then
       in_str = 0
       pl_run[#pl_run + 1] = string.sub(stri, 1, #stri - 1)
       state = 0
@@ -146,8 +146,7 @@ local function lex(instruction)
 			dhx["prev_char"] = prev_char
 			dhx["in_str"] = in_str
 
-			local abx = modules_[plugin].run(dhx)
-
+      local abx = modules_[plugin].run(dhx)
 			stri = abx["stri"]
 			state = abx["state"]
 			in_str = abx["in_str"]
@@ -159,9 +158,10 @@ local function lex(instruction)
 end
 
 local function main()
+  local module_ = ""
   for _,module in ipairs(config.INSTALLED_PACKAGES) do
-    modules_[module] = require(module)
-    print("Loaded " .. module)
+    module_ = require(module)
+    modules_[module_.config.name] = require(module)
   end
 
   for _,instruction in ipairs(instructions) do lex(instruction) end

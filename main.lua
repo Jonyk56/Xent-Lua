@@ -45,7 +45,7 @@ local function prompt()
 end
 
 local function main()
-  print("XenText Interpreter ( Xent version " .. conf.runtime_opt.version)
+  print("XenText Interpreter ( Xent version " .. config.runtime_opt.version)
   print("Type XenText Code here, then type run() to execute it")
   print("or type exit() to exit the interpreter")
 
